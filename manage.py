@@ -4,8 +4,8 @@ import sys
 
 if __name__ == "__main__":
     import sys
-    sys.path.append(os.path.join(os.path.dirname(__file__), '.'))
-    sys.path.append(os.path.join(os.path.dirname(__file__),'env/lib/python2.7/site-packages'))
+    sys.path.append(os.path.join(os.path.dirname(__file__), 'userdata/'))
+    sys.path.append(os.path.join(os.path.dirname(__file__), 'env/lib/python2.7/site-packages'))
 
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "userdata.settings")
 
