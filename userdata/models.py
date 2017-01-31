@@ -18,7 +18,7 @@ class OpinionQuestionOption(models.Model):
         ordering = ['sequence']
 
     def __str__(self):
-        return self.text
+        return str(self.id) + ':' + self.text
 
 
 class OpinionQuestion(models.Model):
@@ -26,7 +26,7 @@ class OpinionQuestion(models.Model):
     question_type = models.IntegerField(choices=QUESTION_TYPES)
     sequence = models.PositiveSmallIntegerField()
     required = models.BooleanField(default=False)
-    options = models.ManyToManyField(OpinionQuestionOption)
+    options = models.ManyToManyField(OpinionQuestionOption, null=True)
 
     class Meta:
         ordering = ['sequence']
@@ -74,17 +74,41 @@ class Citizen(models.Model):
 
 
 class CitizenOpinion(models.Model):
-    user = models.ForeignKey(Citizen)
+    user = models.ForeignKey(Citizen, null=True)
     datetime = models.DateTimeField(auto_now_add=True)
-    project = models.CharField(max_length=20, default='')
-    confidence = models.IntegerField()
+    # # project = models.CharField(max_length=20, default='')
+    project = models.ForeignKey(CitSciProject, null=True)
+    question = models.ForeignKey(OpinionQuestion, null=True)
+    answer_option = models.ForeignKey(OpinionQuestionOption, null=True)
+    answer_text = models.CharField(max_length=1000, null=True)
 
     class Meta:
         ordering = ['datetime']
 
+    # def __str__(self):
+    #     return '{0} {1}'.format(self.datetime.strftime(DATETIME_FORMAT), self.user)
+
+DELIVERY_METHODS = (
+    (1, 'Collect'),
+    (2, 'Post'),
+)
+class Reservation(models.Model):
+    eventName = models.CharField(max_length=100)
+    eventStartDate = models.DateField()
+    eventEndDate = models.DateField()
+    numberOfDevices = models.PositiveSmallIntegerField()
+    deliveryMethod = models.IntegerField(choices=DELIVERY_METHODS)
+    outDate = models.DateField()
+    returnDate = models.DateField()
+    bookerName = models.CharField(max_length=255)
+    bookerEmail = models.CharField(max_length=255)
+    deliveryAddress = models.CharField(max_length=255, null=True, default='')
+    costCode = models.CharField(max_length=10, null=True, default='')
+
+    class Meta:
+        ordering = ['outDate']
+
     def __str__(self):
-        return '{0} {1}'.format(self.datetime.strftime(DATETIME_FORMAT), self.user)
-
-
+        return "{1} to {2} ({3}) - {0}".format(self.eventName, self.outDate, self.returnDate, self.numberOfDevices)
 
 

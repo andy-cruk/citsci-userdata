@@ -10,6 +10,10 @@ urlpatterns = patterns(
     # url(r'^$', 'userdata.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
+    url(r'reservations$', views.reservations_list),
+    url(r'availability$', views.availability),
+    url(r'webhook$', views.webhook),
+
     url(r'api/users/all$', views.api_user_list),
     url(r'api/users/(?P<user_id>\d+)$', views.api_user_details),
 
@@ -19,4 +23,9 @@ urlpatterns = patterns(
 
     url(r'api/citizens$', views.citizen_list),
     url(r'api/citizen/(?P<pk>\d+)$', views.citizen_detail),
+
+    url(r'api/opinionquestions$', views.api_opinionquestion_list),
+
+    url(r'api/citizenopinions$', views.api_citizen_opinion),
+
 )
